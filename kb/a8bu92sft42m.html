@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>2026-2027学年 第一学期 课表</title>
+<style>
+  :root { --slot: 54px; --accent: #2563eb; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; font: 14px/1.4 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         background: #f2f4f8; color: #1f2937; padding-bottom: env(safe-area-inset-bottom); }
+  header { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid #e5e7eb;
+           padding: calc(env(safe-area-inset-top) + 10px) 12px 10px; }
+  .title { font-size: 16px; font-weight: 600; }
+  .sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+  .nav { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .nav button { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 6px 12px;
+                font-size: 14px; color: #374151; }
+  .nav button:active { background: #f3f4f6; }
+  .nav .wk { flex: 1; text-align: center; font-weight: 600; }
+  .grid { display: flex; padding: 8px 6px 24px; gap: 3px; }
+  .times { position: relative; width: 44px; flex: none; }
+  .times .t { position: absolute; width: 100%; text-align: center; font-size: 10px; color: #9ca3af; }
+  .times .t b { display: block; font-size: 12px; color: #6b7280; }
+  .cols { display: flex; flex: 1; gap: 3px; }
+  .col { position: relative; flex: 1; min-width: 0; background: #fff; border-radius: 8px; }
+  .col.today { box-shadow: inset 0 0 0 2px var(--accent); }
+  .hd { display: flex; padding: 0 6px; margin-bottom: 6px; gap: 3px; }
+  .hd .h { flex: 1; text-align: center; font-size: 12px; color: #6b7280; }
+  .hd .h.today { color: var(--accent); font-weight: 700; }
+  .hd .sp { width: 44px; flex: none; }
+  .blk { position: absolute; border-radius: 6px; padding: 4px 5px; overflow: hidden;
+         font-size: 11px; line-height: 1.25; color: #fff; }
+  .blk .n { font-weight: 600; word-break: break-all; }
+  .blk .nt { display: inline-block; margin-left: 4px; padding: 0 4px; border-radius: 4px;
+             font-size: 10px; font-weight: 500; background: rgba(255,255,255,.75);
+             color: #b3261e; vertical-align: 1px; }
+  .blk .m { opacity: .85; margin-top: 2px; word-break: break-all; }
+  .legend { padding: 0 12px 24px; display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #6b7280; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px;
+              vertical-align: -1px; font-style: normal; }
+</style>
+</head>
+<body>
+<header>
+  <div class="title">2026-2027学年 第一学期</div>
+  <div class="sub">河南水利与环境职业学院 · 共 18 周 · 起始 2026-08-31</div>
+  <div class="nav">
+    <button id="prev">‹ 上一周</button>
+    <div class="wk" id="wkLabel"></div>
+    <button id="next">下一周 ›</button>
+  </div>
+</header>
+<div class="hd" id="head"></div>
+<div class="grid">
+  <div class="times" id="times"></div>
+  <div class="cols" id="cols"></div>
+</div>
+<div class="legend" id="legend"></div>
+<script>
+const DATA = {"meta": {"school": "河南水利与环境职业学院", "semester": "2026-2027学年 第一学期", "start_date": "2026-08-31", "total_weeks": 18, "timezone": "Asia/Shanghai", "reminder_minutes": 20}, "periods": [{"index": 1, "start": "08:00", "end": "08:40"}, {"index": 2, "start": "08:50", "end": "09:30"}, {"index": 3, "start": "10:00", "end": "10:40"}, {"index": 4, "start": "10:50", "end": "11:30"}, {"index": 5, "start": "14:30", "end": "15:10"}, {"index": 6, "start": "15:20", "end": "16:00"}, {"index": 7, "start": "16:30", "end": "17:10"}, {"index": 8, "start": "17:20", "end": "18:00"}, {"index": 9, "start": "19:00", "end": "19:40"}, {"index": 10, "start": "19:50", "end": "20:30"}], "courses": [{"name": "操作系统安全", "teacher": "吕名扬", "location": "南教5机房", "periods": [3, 4], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 1}, {"name": "应用数学（1）", "teacher": "杨瑞云", "location": "南教304", "periods": [5, 6], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], "weekday": 1}, {"name": "高级路由交换技术", "teacher": "刘思宇", "location": "南教6机房", "periods": [1, 2], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 2}, {"name": "JavaScript技术", "teacher": "刘亚茹", "location": "南教7机房", "periods": [3, 4], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 2}, {"name": "网络安全设备配置与管理", "teacher": "徐凤捷", "location": "北教606-（信息）机房", "periods": [9, 10], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 2}, {"name": "创新创业教育（2）", "teacher": "郭广勇", "location": "南教305", "periods": [1, 2], "weeks": [5, 7, 8], "weekday": 3}, {"name": "形势与政策（3）", "teacher": "张玉鑫", "location": "南教305", "periods": [1, 2], "weeks": [1, 2, 3, 4], "weekday": 3}, {"name": "高级路由交换技术", "teacher": "刘思宇", "location": "南教9机房", "periods": [3, 4], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 3}, {"name": "PHP网站开发技术", "teacher": "廉东方", "location": "北教607-（信息）机房", "periods": [5, 6], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 3}, {"name": "PHP网站开发技术", "teacher": "廉东方", "location": "北教607-（信息）机房", "periods": [7, 8], "weeks": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 3}, {"name": "网络安全设备配置与管理", "teacher": "徐凤捷", "location": "北教606-（信息）机房", "periods": [1, 2], "weeks": [1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 4}, {"name": "习近平新时代中国特色社会主义（1）", "teacher": "鲍美红", "location": "南教105", "periods": [3, 4], "weeks": [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12], "weekday": 4}, {"name": "操作系统安全", "teacher": "吕名扬", "location": "南教5机房", "periods": [1, 2], "weeks": [1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "weekday": 5}, {"name": "创新创业教育（2）", "teacher": "郭广勇", "location": "南教305", "weekday": 6, "periods": [1, 2], "weeks": [6], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "高级路由交换技术", "teacher": "刘思宇", "location": "南教9机房", "weekday": 6, "periods": [3, 4], "weeks": [6], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "PHP网站开发技术", "teacher": "廉东方", "location": "北教607-（信息）机房", "weekday": 6, "periods": [5, 6], "weeks": [6], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "PHP网站开发技术", "teacher": "廉东方", "location": "北教607-（信息）机房", "weekday": 6, "periods": [7, 8], "weeks": [6], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "高级路由交换技术", "teacher": "刘思宇", "location": "南教6机房", "weekday": 7, "periods": [1, 2], "weeks": [3], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "JavaScript技术", "teacher": "刘亚茹", "location": "南教7机房", "weekday": 7, "periods": [3, 4], "weeks": [3], "note": "补课", "memo": "批量停课/补课-补课"}, {"name": "网络安全设备配置与管理", "teacher": "徐凤捷", "location": "北教606-（信息）机房", "weekday": 7, "periods": [9, 10], "weeks": [3], "note": "补课", "memo": "批量停课/补课-补课"}]};
+const SLOT = 54, GAP = 3;
+let week = 5;
+
+const periods = DATA.periods.slice().sort((a,b)=>a.index-b.index);
+const pStart = Object.fromEntries(periods.map(p=>[p.index, p.start]));
+const pEnd = Object.fromEntries(periods.map(p=>[p.index, p.end]));
+const total = periods.length;
+
+function hue(s){ let h=0; for(const ch of s) h=(h*31+ch.codePointAt(0))%360; return h; }
+function color(name){ return `hsl(${hue(name)} 62% 45%)`; }
+
+// 单双周/指定周：同一门课同一时间的不同周次合并展示
+function activeCourses(w){
+  return DATA.courses.filter(c=>c.weeks.includes(w));
+}
+
+// 同一天同节次重叠的课分列显示
+function layout(list){
+  const sorted = list.slice().sort((a,b)=>a.periods[0]-b.periods[0]);
+  const lanes = [];
+  const out = [];
+  for(const c of sorted){
+    let lane = lanes.findIndex(end => end < c.periods[0]);
+    if(lane === -1){ lane = lanes.length; lanes.push(0); }
+    lanes[lane] = c.periods[c.periods.length-1];
+    out.push({c, lane});
+  }
+  return {out, lanes: Math.max(1, lanes.length)};
+}
+
+function render(){
+  const today = new Date();
+  document.getElementById('wkLabel').textContent = `第 ${week} 周`;
+  document.getElementById('head').innerHTML = '<div class="sp"></div>' +
+    ['一','二','三','四','五','六','日'].map((d,i)=>{
+      const dt = new Date(DATA.meta.start_date + 'T00:00:00');
+      dt.setDate(dt.getDate() + (week-1)*7 + i);
+      const mark = (dt.toDateString() === today.toDateString()) ? ' today' : '';
+      return `<div class="h${mark}">周${d}<br><span style="font-size:10px">${dt.getMonth()+1}/${dt.getDate()}</span></div>`;
+    }).join('');
+
+  let tHtml = '';
+  periods.forEach((p,i)=>{
+    tHtml += `<div class="t" style="top:${i*SLOT}px;height:${SLOT}px"><b>${p.index}</b>${p.start}</div>`;
+  });
+  document.getElementById('times').style.height = (total*SLOT)+'px';
+  document.getElementById('times').innerHTML = tHtml;
+
+  const active = activeCourses(week);
+  let cHtml = '';
+  for(let d=1; d<=7; d++){
+    const dayCourses = active.filter(c=>c.weekday===d);
+    const {out, lanes} = layout(dayCourses);
+    const dt = new Date(DATA.meta.start_date + 'T00:00:00');
+    dt.setDate(dt.getDate() + (week-1)*7 + (d-1));
+    const isToday = dt.toDateString() === today.toDateString();
+    let inner = '';
+    for(const {c, lane} of out){
+      const p0 = c.periods[0], p1 = c.periods[c.periods.length-1];
+      const top = (p0-1)*SLOT, h = (p1-p0+1)*SLOT - GAP;
+      const w = 100/lanes;
+      inner += `<div class="blk" style="top:${top}px;height:${h}px;left:calc(${lane*w}% + 2px);width:calc(${w}% - 4px);background:${color(c.name)}">
+        <div class="n">${c.name}${c.note?'<span class="nt">'+c.note+'</span>':''}</div>
+        <div class="m">${c.location||''}</div>
+        <div class="m">${pStart[p0]}–${pEnd[p1]}${c.teacher?' · '+c.teacher:''}</div>
+        <div class="m">${c.weeks.length<DATA.meta.total_weeks?('第'+c.weeks.join(',')+'周'):''}</div>
+      </div>`;
+    }
+    cHtml += `<div class="col${isToday?' today':''}" style="height:${total*SLOT}px">${inner}</div>`;
+  }
+  document.getElementById('cols').innerHTML = cHtml;
+
+  const names = [...new Set(active.map(c=>c.name))];
+  document.getElementById('legend').innerHTML = names.map(n=>
+    `<span><i style="background:${color(n)}"></i>${n}</span>`).join('') || '本周没有课 🎉';
+}
+
+document.getElementById('prev').onclick = ()=>{ if(week>1){week--; render();} };
+document.getElementById('next').onclick = ()=>{ if(week<DATA.meta.total_weeks){week++; render();} };
+render();
+</script>
+</body>
+</html>
